@@ -22,7 +22,7 @@ def self.new_consumer_account(user)
 
 	#toss an exception if the user cannot be created.
 	if page.title.include? "Downloading Dropbox"
-		puts "success"
+		puts "success"f
 		else
 	raise "error, user not created"
 
