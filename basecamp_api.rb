@@ -4,21 +4,21 @@ require './userAndMember.rb'
 
 
 
-
 module Basecamp
-
   def self.new_account(user)
     agent = Mechanize.new{ |agent| agent.user_agent_alias = 'Mac Safari'}
     agent.cookie_jar.clear!
     page = agent.get('http://basecamp.com')
     basecamp_form = page.forms[0]
-    agent.page.forms[0]["signup[full_name]"] = user.fname + ' ' + user.lname
-    agent.page.forms[0]["signup[email_address]"] = user.email
-    agent.page.forms[0]["signup[company_name]"] = user.team_name
-    agent.page.forms[0]["signup[password]"] = user.password
-    agent.page.forms[0]["signup[password_confirmation]"] = user.password
+
+    basecamp_form["signup[full_name]"] = user.fname + ' ' + user.lname
+    basecamp_form["signup[email_address]"] = user.email
+    basecamp_form["signup[company_name]"] = user.team_name
+    basecamp_form["signup[password]"] = user.password
+    basecamp_form["signup[password_confirmation]"] = user.password
+
     page = agent.submit basecamp_form
-    
+
     if page.title.include? "Thanks for choosing"
       puts "success"
     else
@@ -49,7 +49,4 @@ module Basecamp
     pp page
   end
 end
-
-
-
 
