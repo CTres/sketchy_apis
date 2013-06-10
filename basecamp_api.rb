@@ -1,16 +1,7 @@
 require 'rubygems'
 require 'mechanize'
+require './userAndMember.rb'
 
-class User
-  attr_accessor :fname, :lname, :email, :password, :phone, :team_num_users, :team_name, :login_email, :login_password, :name, :ccn, :expmo, :expyr, :ccode, :address, :city, :state, :zip, :country_code
-
-  def initialize(fname, lname, email, password, phone, team_num_users, team_name, login_email, login_password, name, ccn,expmo, expyr, ccode, address, city, state, zip, country_code)
-  @fname, @lname, @email, @password, @phone, @team_num_users, @team_name,
-  @name, @login_email, @login_password, @ccn, @expmo, @expyr, @ccode, @address, @city, @state, @zip, @country_code =
-  fname, lname, email, password, phone, team_num_users, team_name, name, login_email,
-  login_password, ccn, expmo, expyr, ccode, address, city, state, zip, country_code
-  end
-end
 
 
 
@@ -34,9 +25,31 @@ module Basecamp
       raise "error, account not created"
     end
   end
+
+  def self.login(user)
+    #only works for an email with a single associated account
+    agent = Mechanize.new{ |agent| agent.user_agent_alias = 'Mac Safari'}
+    agent.cookie_jar.clear!
+    basecamp_form = agent.get('https://launchpad.37signals.com/basecamp/signin').forms[0]
+    basecamp_form.username = user.email
+    basecamp_form.password = user.password
+    page = basecamp_form.click_button
+    page.uri
+  end
+
+  def self.add_member(user, member)
+    agent = Mechanize.new{ |agent| agent.user_agent_alias = 'Mac Safari'}
+    agent.cookie_jar.clear!
+    basecamp_form = agent.get('https://launchpad.37signals.com/basecamp/signin').forms[0]
+    basecamp_form.username = user.email
+    basecamp_form.password = user.password
+    page = basecamp_form.click_button
+    url = page.uri
+    page = agent.get("#{url}people/new")
+    pp page
+  end
 end
 
 
-chuck = User.new('colin', 'treseler', 'colin.treseler@klarna.se', 'foo1NecN;l', '6175640388', '10', 'extralas', '', '', 'colin treseler', '4556810589466228', '12', '14', '166', '79 manet rd', 'newton', 'ma', '02467', 'us')
 
-Basecamp.new_account(chuck)
+

@@ -1,34 +1,5 @@
 require 'rubygems'
 require 'mechanize'
-
-class User
-  ATTRIBUTES = [
-  :fname, :lname, :email, :password, :team_phone, :team_num_users,
-  :team_name, :login_email, :login_password, :name, :ccn, :expmo,
-  :expyr, :ccode, :address, :city, :state, :zip, :country_code
-  ]
- 
-  attr_accessor *ATTRIBUTES
- 
-  def initialize(attributes = {})
-    attributes.each_pair do |k, v|
-      #setter method
-      send("#{k}=", v)
-
-
-    end
-  end
- 
-  def to_hash
-  #create a hash of the instance variables
-    hash = {}
-    instance_variables.each do |ivar|
-      hash[ivar.to_s.delete("@")] = instance_variable_get(ivar)
-    end
- 
-    hash
-    end
-  end
  
 module Dropbox
   CONSUMER_FIELDS = %w(fname lname email password)
@@ -42,9 +13,9 @@ module Dropbox
     agent = Mechanize.new{|agent| agent.user_agent_alias = 'Mac Safari' }
     agent.cookie_jar.clear!
     dropbox_form = agent.get('http://www.dropbox.com/').forms[1]
-   
+    pp dropbox_form
     CONSUMER_FIELDS.each do |field|
-      dropbox_form.send(field.to_sym, user[field])
+      dropbox_form.send field.to_sym, user[field]
     end
 
     dropbox_form.checkbox_with(:name => 'tos_agree').check
