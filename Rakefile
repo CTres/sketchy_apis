@@ -1,18 +1,19 @@
-require './dropbox_api'
-require './basecamp_api'
+require './lib/mimicry'
+require './lib/mimicry/dropbox'
+require './lib/mimicry/basecamp'
 
 namespace :dropbox do
   desc 'Create a new Dropbox consumer account'
   task :consumer_account do
     email = create_email
-    user = User.new({
+    user = {
       :fname => 'Charles',
       :lname => 'Treseler',
       :email => "#{email}@example.com",
       :password => 'password123'
-    })
+    }
 
-    Dropbox.consumer_account(user)
+    Mimicry::Dropbox.consumer_account(user)
   end
 end
 
@@ -20,15 +21,15 @@ namespace :basecamp do
   desc 'Create a new Basecamp account'
   task :new_account do
     email = create_email
-    user = User.new({
+    user = {
       :fname => 'charles',
       :lname => 'treseler',
-      :email => 'colin.treseler@klarna.com',
+      :email => "#{email}@example.com",
       :team_name => 'foo team',
       :password => 'password123'
-    })
+    }
 
-    Basecamp.new_account(user)
+    Mimicry::Basecamp.new_account(user)
   end
 end
 
