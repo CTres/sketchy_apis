@@ -15,6 +15,29 @@ namespace :dropbox do
 
     Mimicry::Dropbox.consumer_account(user)
   end
+
+  desc 'Create a new Dropbox business account'
+  task :business_account do
+    email = create_email
+    user = {
+      :fname => 'Charles',
+      :lname => 'Treseler',
+      :email => "#{email}@example.com",
+      :password => 'password123',
+      :team_name => 'team-foo-123',
+      :team_num_users => '1',
+      :ccn => '4532866170206174',
+      :expmo => '12',
+      :expyr => '14',
+      :address => '123 Foo Road',
+      :city => 'Boston',
+      :state => 'MA',
+      :zip => '02216',
+      :country_code => 'US'
+    }
+
+    Mimicry::Dropbox.business_account(user)
+  end
 end
 
 namespace :basecamp do
