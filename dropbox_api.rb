@@ -12,7 +12,10 @@ class User
  
   def initialize(attributes = {})
     attributes.each_pair do |k, v|
+      #setter method
       send("#{k}=", v)
+
+
     end
   end
  
@@ -32,8 +35,7 @@ module Dropbox
 
   NEW_BUSINESS_FIELDS = %w(team_num_users team_name team_phone fname lname email password ccn expmo expyr ccode address city state zip country_code)
   
-
-   
+  CONVERT_BUSINESS_FIELDS = %w
   def self.consumer_account(user)
     user = user.to_hash
     agent = Mechanize.new{|agent| agent.user_agent_alias = 'Mac Safari' }
