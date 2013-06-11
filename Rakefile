@@ -1,6 +1,4 @@
 require './lib/mimicry'
-require './lib/mimicry/dropbox'
-require './lib/mimicry/basecamp'
 
 namespace :dropbox do
   desc 'Create a new Dropbox consumer account'
